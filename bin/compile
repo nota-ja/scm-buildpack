@@ -45,13 +45,13 @@ elif [[ "$SCM_URL" =~ \.(git)$ ]]; then
   SCM_BRANCH=${SCM_BRANCH:-master}
   echo "=====> SCM_BRANCH is $SCM_BRANCH"
   if [[ -d $SCM_DIR/.git ]]; then
-    echo "=====> Fetching changes for existing repo"
+    echo "=====> Fetching changes for existing repo (shallow fetch)"
     cd $SCM_DIR
-    git fetch origin | indent
+    git fetch --depth=1 --update-shallow origin | indent
     git checkout origin/$SCM_BRANCH >/dev/null 2>&1
   else
-    echo "=====> Cloning remote git repository"
-    git clone $SCM_URL $SCM_DIR | indent
+    echo "=====> Cloning remote git repository (shallow clone)"
+    git clone --depth=1 --branch $SCM_BRANCH $SCM_URL $SCM_DIR | indent
   fi
   cp -R $SCM_DIR/* $BUILD_DIR/
   rm -rf $BUILD_DIR/.git
