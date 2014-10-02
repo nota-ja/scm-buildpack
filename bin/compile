@@ -47,8 +47,9 @@ elif [[ "$SCM_URL" =~ \.(git)$ ]]; then
   if [[ -d $SCM_DIR/.git ]]; then
     echo "=====> Fetching changes for existing repo (shallow fetch)"
     cd $SCM_DIR
-    git fetch --depth=1 --update-shallow origin | indent
-    git checkout origin/$SCM_BRANCH >/dev/null 2>&1
+    git fetch --depth=1 --update-shallow origin $SCM_BRANCH | indent
+    git checkout FETCH_HEAD >/dev/null 2>&1
+    git gc
   else
     echo "=====> Cloning remote git repository (shallow clone)"
     git clone --depth=1 --branch $SCM_BRANCH $SCM_URL $SCM_DIR | indent
