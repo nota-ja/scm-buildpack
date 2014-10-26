@@ -54,7 +54,10 @@ elif [[ "$SCM_URL" =~ \.(git)$ ]]; then
     echo "=====> Cloning remote git repository (shallow clone)"
     git clone --depth=1 --branch $SCM_BRANCH $SCM_URL $SCM_DIR | indent
   fi
-  cp -R $SCM_DIR/* $BUILD_DIR/
+  echo "=====> scm dir listing"
+  ls -al $SCM_DIR | indent
+  echo cp -npR $(find $SCM_DIR -mindepth 1 -maxdepth 1) $BUILD_DIR
+  cp -npR $(find $SCM_DIR -mindepth 1 -maxdepth 1) $BUILD_DIR
 else
   echo "! \$SCM_URL $SCM_URL was not detected as a tgz, zip or git" | indent
   exit 1
